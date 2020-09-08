@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBAmigModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FABRICANTES">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FOTOS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Imagem" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Receita_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ITENSPEDIDO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Quant" Type="smallint" Nullable="false" />
+          <Property Name="ValorUnitario" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Linha_Id" Type="int" Nullable="false" />
+          <Property Name="Pedido_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LINHAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodLinha" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DescricaoCor" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="QtdFechada" Type="int" Nullable="false" />
+          <Property Name="QtdAberta" Type="int" Nullable="false" />
+          <Property Name="TipoLinha_Id" Type="int" Nullable="false" />
+          <Property Name="Fabricante_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PEDIDOS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RECEITAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="None" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Descricao" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Revista_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RECEITASLINHAS">
+          <Key>
+            <PropertyRef Name="Receita_Id" />
+            <PropertyRef Name="Linha_Id" />
+          </Key>
+          <Property Name="Receita_Id" Type="int" Nullable="false" />
+          <Property Name="Linha_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REVISTAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tema" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="NumeroEdicao" Type="smallint" Nullable="false" />
+          <Property Name="FotoCapa" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TIPOSLINHA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CompraItens">
+          <End Role="PEDIDOS" Type="Self.PEDIDOS" Multiplicity="1" />
+          <End Role="ITENSPEDIDO" Type="Self.ITENSPEDIDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEDIDOS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ITENSPEDIDO">
+              <PropertyRef Name="Pedido_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FabricanteLinha">
+          <End Role="FABRICANTES" Type="Self.FABRICANTES" Multiplicity="1" />
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FABRICANTES">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LINHAS">
+              <PropertyRef Name="Fabricante_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LinhaItens">
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="1" />
+          <End Role="ITENSPEDIDO" Type="Self.ITENSPEDIDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LINHAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ITENSPEDIDO">
+              <PropertyRef Name="Linha_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceitaFoto">
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="1" />
+          <End Role="FOTOS" Type="Self.FOTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RECEITAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FOTOS">
+              <PropertyRef Name="Receita_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RECEITASLINHAS_Linha">
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="1" />
+          <End Role="RECEITASLINHAS" Type="Self.RECEITASLINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LINHAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RECEITASLINHAS">
+              <PropertyRef Name="Linha_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RECEITASLINHAS_Receita">
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="1" />
+          <End Role="RECEITASLINHAS" Type="Self.RECEITASLINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RECEITAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RECEITASLINHAS">
+              <PropertyRef Name="Receita_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RevistaReceita">
+          <End Role="REVISTAS" Type="Self.REVISTAS" Multiplicity="1" />
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REVISTAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RECEITAS">
+              <PropertyRef Name="Revista_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoLinhaLinha">
+          <End Role="TIPOSLINHA" Type="Self.TIPOSLINHA" Multiplicity="1" />
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOSLINHA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LINHAS">
+              <PropertyRef Name="TipoLinha_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBAmigModelStoreContainer">
+          <EntitySet Name="FABRICANTES" EntityType="Self.FABRICANTES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FOTOS" EntityType="Self.FOTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ITENSPEDIDO" EntityType="Self.ITENSPEDIDO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LINHAS" EntityType="Self.LINHAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PEDIDOS" EntityType="Self.PEDIDOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RECEITAS" EntityType="Self.RECEITAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RECEITASLINHAS" EntityType="Self.RECEITASLINHAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REVISTAS" EntityType="Self.REVISTAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPOSLINHA" EntityType="Self.TIPOSLINHA" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CompraItens" Association="Self.FK_CompraItens">
+            <End Role="PEDIDOS" EntitySet="PEDIDOS" />
+            <End Role="ITENSPEDIDO" EntitySet="ITENSPEDIDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FabricanteLinha" Association="Self.FK_FabricanteLinha">
+            <End Role="FABRICANTES" EntitySet="FABRICANTES" />
+            <End Role="LINHAS" EntitySet="LINHAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LinhaItens" Association="Self.FK_LinhaItens">
+            <End Role="LINHAS" EntitySet="LINHAS" />
+            <End Role="ITENSPEDIDO" EntitySet="ITENSPEDIDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceitaFoto" Association="Self.FK_ReceitaFoto">
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+            <End Role="FOTOS" EntitySet="FOTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RECEITASLINHAS_Linha" Association="Self.FK_RECEITASLINHAS_Linha">
+            <End Role="LINHAS" EntitySet="LINHAS" />
+            <End Role="RECEITASLINHAS" EntitySet="RECEITASLINHAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RECEITASLINHAS_Receita" Association="Self.FK_RECEITASLINHAS_Receita">
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+            <End Role="RECEITASLINHAS" EntitySet="RECEITASLINHAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RevistaReceita" Association="Self.FK_RevistaReceita">
+            <End Role="REVISTAS" EntitySet="REVISTAS" />
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoLinhaLinha" Association="Self.FK_TipoLinhaLinha">
+            <End Role="TIPOSLINHA" EntitySet="TIPOSLINHA" />
+            <End Role="LINHAS" EntitySet="LINHAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBAmigModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FABRICANTES">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="LINHAS" Relationship="Self.FK_FabricanteLinha" FromRole="FABRICANTES" ToRole="LINHAS" />
+        </EntityType>
+        <EntityType Name="FOTOS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Imagem" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="Receita_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RECEITAS" Relationship="Self.FK_ReceitaFoto" FromRole="FOTOS" ToRole="RECEITAS" />
+        </EntityType>
+        <EntityType Name="ITENSPEDIDO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Quant" Type="Int16" Nullable="false" />
+          <Property Name="ValorUnitario" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Linha_Id" Type="Int32" Nullable="false" />
+          <Property Name="Pedido_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PEDIDOS" Relationship="Self.FK_CompraItens" FromRole="ITENSPEDIDO" ToRole="PEDIDOS" />
+          <NavigationProperty Name="LINHAS" Relationship="Self.FK_LinhaItens" FromRole="ITENSPEDIDO" ToRole="LINHAS" />
+        </EntityType>
+        <EntityType Name="LINHAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodLinha" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DescricaoCor" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QtdFechada" Type="Int32" Nullable="false" />
+          <Property Name="QtdAberta" Type="Int32" Nullable="false" />
+          <Property Name="TipoLinha_Id" Type="Int32" Nullable="false" />
+          <Property Name="Fabricante_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FABRICANTES" Relationship="Self.FK_FabricanteLinha" FromRole="LINHAS" ToRole="FABRICANTES" />
+          <NavigationProperty Name="ITENSPEDIDO" Relationship="Self.FK_LinhaItens" FromRole="LINHAS" ToRole="ITENSPEDIDO" />
+          <NavigationProperty Name="TIPOSLINHA" Relationship="Self.FK_TipoLinhaLinha" FromRole="LINHAS" ToRole="TIPOSLINHA" />
+          <NavigationProperty Name="RECEITAS" Relationship="Self.RECEITASLINHAS" FromRole="LINHAS" ToRole="RECEITAS" />
+        </EntityType>
+        <EntityType Name="PEDIDOS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ITENSPEDIDO" Relationship="Self.FK_CompraItens" FromRole="PEDIDOS" ToRole="ITENSPEDIDO" />
+        </EntityType>
+        <EntityType Name="RECEITAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="None" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descricao" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Revista_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FOTOS" Relationship="Self.FK_ReceitaFoto" FromRole="RECEITAS" ToRole="FOTOS" />
+          <NavigationProperty Name="REVISTAS" Relationship="Self.FK_RevistaReceita" FromRole="RECEITAS" ToRole="REVISTAS" />
+          <NavigationProperty Name="LINHAS" Relationship="Self.RECEITASLINHAS" FromRole="RECEITAS" ToRole="LINHAS" />
+        </EntityType>
+        <EntityType Name="REVISTAS">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tema" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumeroEdicao" Type="Int16" Nullable="false" />
+          <Property Name="FotoCapa" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="RECEITAS" Relationship="Self.FK_RevistaReceita" FromRole="REVISTAS" ToRole="RECEITAS" />
+        </EntityType>
+        <EntityType Name="TIPOSLINHA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="LINHAS" Relationship="Self.FK_TipoLinhaLinha" FromRole="TIPOSLINHA" ToRole="LINHAS" />
+        </EntityType>
+        <Association Name="FK_FabricanteLinha">
+          <End Role="FABRICANTES" Type="Self.FABRICANTES" Multiplicity="1" />
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FABRICANTES">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LINHAS">
+              <PropertyRef Name="Fabricante_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceitaFoto">
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="1" />
+          <End Role="FOTOS" Type="Self.FOTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RECEITAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FOTOS">
+              <PropertyRef Name="Receita_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompraItens">
+          <End Role="PEDIDOS" Type="Self.PEDIDOS" Multiplicity="1" />
+          <End Role="ITENSPEDIDO" Type="Self.ITENSPEDIDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEDIDOS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ITENSPEDIDO">
+              <PropertyRef Name="Pedido_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LinhaItens">
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="1" />
+          <End Role="ITENSPEDIDO" Type="Self.ITENSPEDIDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LINHAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ITENSPEDIDO">
+              <PropertyRef Name="Linha_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TipoLinhaLinha">
+          <End Role="TIPOSLINHA" Type="Self.TIPOSLINHA" Multiplicity="1" />
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOSLINHA">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LINHAS">
+              <PropertyRef Name="TipoLinha_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RevistaReceita">
+          <End Role="REVISTAS" Type="Self.REVISTAS" Multiplicity="1" />
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REVISTAS">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RECEITAS">
+              <PropertyRef Name="Revista_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RECEITASLINHAS">
+          <End Role="LINHAS" Type="Self.LINHAS" Multiplicity="*" />
+          <End Role="RECEITAS" Type="Self.RECEITAS" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DBAmigContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FABRICANTES" EntityType="Self.FABRICANTES" />
+          <EntitySet Name="FOTOS" EntityType="Self.FOTOS" />
+          <EntitySet Name="ITENSPEDIDO" EntityType="Self.ITENSPEDIDO" />
+          <EntitySet Name="LINHAS" EntityType="Self.LINHAS" />
+          <EntitySet Name="PEDIDOS" EntityType="Self.PEDIDOS" />
+          <EntitySet Name="RECEITAS" EntityType="Self.RECEITAS" />
+          <EntitySet Name="REVISTAS" EntityType="Self.REVISTAS" />
+          <EntitySet Name="TIPOSLINHA" EntityType="Self.TIPOSLINHA" />
+          <AssociationSet Name="FK_FabricanteLinha" Association="Self.FK_FabricanteLinha">
+            <End Role="FABRICANTES" EntitySet="FABRICANTES" />
+            <End Role="LINHAS" EntitySet="LINHAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceitaFoto" Association="Self.FK_ReceitaFoto">
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+            <End Role="FOTOS" EntitySet="FOTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompraItens" Association="Self.FK_CompraItens">
+            <End Role="PEDIDOS" EntitySet="PEDIDOS" />
+            <End Role="ITENSPEDIDO" EntitySet="ITENSPEDIDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LinhaItens" Association="Self.FK_LinhaItens">
+            <End Role="LINHAS" EntitySet="LINHAS" />
+            <End Role="ITENSPEDIDO" EntitySet="ITENSPEDIDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TipoLinhaLinha" Association="Self.FK_TipoLinhaLinha">
+            <End Role="TIPOSLINHA" EntitySet="TIPOSLINHA" />
+            <End Role="LINHAS" EntitySet="LINHAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RevistaReceita" Association="Self.FK_RevistaReceita">
+            <End Role="REVISTAS" EntitySet="REVISTAS" />
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+          </AssociationSet>
+          <AssociationSet Name="RECEITASLINHAS" Association="Self.RECEITASLINHAS">
+            <End Role="LINHAS" EntitySet="LINHAS" />
+            <End Role="RECEITAS" EntitySet="RECEITAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBAmigModelStoreContainer" CdmEntityContainer="DBAmigContext">
+          <EntitySetMapping Name="FABRICANTES">
+            <EntityTypeMapping TypeName="DBAmigModel.FABRICANTES">
+              <MappingFragment StoreEntitySet="FABRICANTES">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FOTOS">
+            <EntityTypeMapping TypeName="DBAmigModel.FOTOS">
+              <MappingFragment StoreEntitySet="FOTOS">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Imagem" ColumnName="Imagem" />
+                <ScalarProperty Name="Receita_Id" ColumnName="Receita_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITENSPEDIDO">
+            <EntityTypeMapping TypeName="DBAmigModel.ITENSPEDIDO">
+              <MappingFragment StoreEntitySet="ITENSPEDIDO">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Quant" ColumnName="Quant" />
+                <ScalarProperty Name="ValorUnitario" ColumnName="ValorUnitario" />
+                <ScalarProperty Name="Linha_Id" ColumnName="Linha_Id" />
+                <ScalarProperty Name="Pedido_Id" ColumnName="Pedido_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LINHAS">
+            <EntityTypeMapping TypeName="DBAmigModel.LINHAS">
+              <MappingFragment StoreEntitySet="LINHAS">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CodLinha" ColumnName="CodLinha" />
+                <ScalarProperty Name="DescricaoCor" ColumnName="DescricaoCor" />
+                <ScalarProperty Name="QtdFechada" ColumnName="QtdFechada" />
+                <ScalarProperty Name="QtdAberta" ColumnName="QtdAberta" />
+                <ScalarProperty Name="TipoLinha_Id" ColumnName="TipoLinha_Id" />
+                <ScalarProperty Name="Fabricante_Id" ColumnName="Fabricante_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PEDIDOS">
+            <EntityTypeMapping TypeName="DBAmigModel.PEDIDOS">
+              <MappingFragment StoreEntitySet="PEDIDOS">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RECEITAS">
+            <EntityTypeMapping TypeName="DBAmigModel.RECEITAS">
+              <MappingFragment StoreEntitySet="RECEITAS">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="None" ColumnName="None" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Revista_Id" ColumnName="Revista_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REVISTAS">
+            <EntityTypeMapping TypeName="DBAmigModel.REVISTAS">
+              <MappingFragment StoreEntitySet="REVISTAS">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tema" ColumnName="Tema" />
+                <ScalarProperty Name="NumeroEdicao" ColumnName="NumeroEdicao" />
+                <ScalarProperty Name="FotoCapa" ColumnName="FotoCapa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPOSLINHA">
+            <EntityTypeMapping TypeName="DBAmigModel.TIPOSLINHA">
+              <MappingFragment StoreEntitySet="TIPOSLINHA">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RECEITASLINHAS" TypeName="DBAmigModel.RECEITASLINHAS" StoreEntitySet="RECEITASLINHAS">
+            <EndProperty Name="LINHAS">
+              <ScalarProperty Name="Id" ColumnName="Linha_Id" />
+            </EndProperty>
+            <EndProperty Name="RECEITAS">
+              <ScalarProperty Name="Id" ColumnName="Receita_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -61,6 +61,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -125,12 +127,55 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="FABRICANTES.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FOTOS.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ITENSPEDIDO.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LINHAS.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModeloDBFAmig.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloDBFAmig.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModeloDBFAmig.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModeloDBFAmig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloDBFAmig.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PEDIDOS.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RECEITAS.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="REVISTAS.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOSLINHA.cs">
+      <DependentUpon>ModeloDBFAmig.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DBAMIG.MDF" />
+    <Content Include="App_Data\DBAMIG_log.ldf">
+      <DependentUpon>DBAMIG.MDF</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -139,8 +184,25 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="ModeloDBFAmig.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModeloDBFAmig.edmx</DependentUpon>
+      <LastGenOutput>ModeloDBFAmig.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModeloDBFAmig.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModeloDBFAmig.edmx</DependentUpon>
+      <LastGenOutput>ModeloDBFAmig.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="ModeloDBFAmig.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModeloDBFAmig.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="ModeloDBFAmig.edmx.diagram">
+      <DependentUpon>ModeloDBFAmig.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -168,7 +230,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +244,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
